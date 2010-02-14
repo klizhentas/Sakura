@@ -12,24 +12,24 @@ div.sakura_calendar
 
 table.sakura_calendar
 {
-    border-spacing: 0px;
-    border-collapse: collapse;
-    border-left: 1px solid #DBE3F0;
-    border-right: 1px solid #DBE3F0;
-    border-bottom: 1px solid #DBE3F0;
+    border-spacing: 0px !important;
+    border-collapse: collapse !important;
+    border-left: 1px solid #DBE3F0 !important;
+    border-right: 1px solid #DBE3F0 !important;
+    border-bottom: 1px solid #DBE3F0 !important;
 }
 
 table.sakura_calendar tr
 {
-    margin: 0px;
-    padding: 0px;
+    margin: 0px !important;
+    padding: 0px !important;
 }
 
 table.sakura_calendar tr td
 {
-    margin: 0px;
-    padding: 2px 4px;
-    text-align: center;    
+    margin: 0px !important;
+    padding: 2px 4px !important;
+    text-align: center !important;    
 }
 
 table.sakura_calendar tr.header, table.sakura_calendar tr.weekdays {
@@ -49,69 +49,69 @@ table.sakura_calendar tr.header span.header_year, table.sakura_calendar tr.heade
 
 table.sakura_calendar tr.weekdays td
 {
-    cursor: default;
-    font-size: 11px;
-    width: 16px;
+    cursor: default !important;
+    font-size: 11px !important;
+    width: 16px !important;
 }
 
 table.sakura_calendar tr.week td
 {
-    cursor: pointer;
-    font-size: 11px;
+    cursor: pointer !important;
+    font-size: 11px !important;
 }
 
 table.sakura_calendar tr.week td.this_month
 {
-    color: black;
+    color: black !important;
 }
 
 table.sakura_calendar tr.week td.this_month_date
 {
-    color: black;
-    background-color: LightGrey;
+    color: black !important;
+    background-color: LightGrey !important;
 }
 
 table.sakura_calendar tr.week td.region_date
 {
-    background-color: #FBFFCE;
+    background-color: #FBFFCE !important;
 }
 
 table.sakura_calendar tr.week td.this_month_date_weekend
 {
-    color: black;
-    background-color: #a7c3db;
+    color: black !important;
+    background-color: #a7c3db !important;
 }
 
 table.sakura_calendar tr.week td.other_month
 {
-    color: gray;
+    color: gray !important;
 }
 
 table.sakura_calendar tr.week td.weekend
 {
-    background-color: #F3F8FF;
+    background-color: #F3F8FF !important;
 }
 
 table.sakura_calendar tr.time {
-    background-color: #DBE3F0;
+    background-color: #DBE3F0 !important;
 }
 
 table.sakura_calendar tr.time td.time input{
-    border:1px solid #F3F8FF;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 11px;
-    width: 30px;
+    border:1px solid #F3F8FF !important;
+    font-family: Arial,Helvetica,sans-serif !important;
+    font-size: 11px !important;
+    width: 30px !important;
 }
 
 table.sakura_calendar tr.time td.time select{
-    border:1px solid #F3F8FF;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 11px;
-    margin-left: 2px;
+    border:1px solid #F3F8FF !important;
+    font-family: Arial,Helvetica,sans-serif !important;
+    font-size: 11px !important;
+    margin-left: 2px !important;
 }
 
 table.sakura_calendar tr.time a{
-    color:black;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 11px;
+    color:black !important;
+    font-family: Arial,Helvetica,sans-serif !important;
+    font-size: 11px !important;
 }
