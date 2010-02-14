@@ -1,0 +1,46 @@
+Hi all, 
+
+Sakura is a prototype & scripaculous based JS datetime parser/formatter and calendar library.
+What does this library provides?
+
+1. Date and time parser and formatter.
+
+%m  	Month as a decimal number [01,12].
+%d  	Day of the month as a decimal number [01,31].
+%y  	Year without century as a decimal number [00,99].
+%Y 	Year with century as a decimal number.
+
+%H  	Hour (24-hour clock) as a decimal number [00,23].
+%P:     Hour:Minute AM/PM mode parser, accepts/folds format like 12:20AM 12:20PM
+%p.     Hour:Minute am/pm mode parser, accepts/folds format like 12:20am 12:20pm
+%M  	Minute as a decimal number [00,59].
+%S      Second as a decimal number [00,59].
+
+var formatter = new S.DateFormatter('%m-%d-%Y %p.');        
+var date = formatter.from_string(' 03 - 16 - 2011 10.04 am');
+var date_string = formatter.to_string(new Date());
+
+2. Calendar with region selects, weeks starting from different days, etc.
+
+ var calendar = new S.Calendar({
+                     inline: 'inline-parent',
+                     week_starts_from: S.Calendar.Sun,
+                     translate: S.Calendar.translate_en,
+                     region_select: true,
+                     region_select_grab_week: true,
+                     on_change: function(date){
+                         $('date-is').innerHTML = date.toString();
+                     },
+                     on_region_select: function(s,e){
+                         $('date-is').innerHTML = [s.toString(),'&mdash;',e.toString()].join(' ');
+                     }
+                 });
+
+Watch demo/small.html for more code examples and demos, tests/datetime.html is for unit tests (needs jsunit to work fine). 
+Please keep unit tests in touch with the codebase.
+
+
+Hope this library will be useful for you, 
+Alex Klizhentas
+
+

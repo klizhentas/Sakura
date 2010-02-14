@@ -1,0 +1,214 @@
+<html>
+    <head>
+        <script language = "javascript" src = "../lib/prototype.js"></script>
+        <script language = "javascript">
+              window.__Sakura = {
+                  translate: function(v){
+                      return v;
+                  }
+              }
+        </script>
+        <script language = "javascript" src = "../calendar/parser.js"></script>
+        <script language = "javascript" src = "../calendar/small.js"></script>
+        <script language = "javascript" src = "jsunit/jsUnitCore.js"></script>
+        <script language = "javascript">
+            var S = window.__Sakura;
+
+            assertEquals(S.DateFormatter.to_string(0,1),'0');
+            assertEquals(S.DateFormatter.to_string(0,2),'00');
+            assertEquals(S.DateFormatter.to_string(1,1),'1');
+            assertEquals(S.DateFormatter.to_string(1,2),'01');
+            assertEquals(S.DateFormatter.to_string(1,3),'001');
+            assertEquals(S.DateFormatter.to_string(10,4),'0010');
+            assertEquals(S.DateFormatter.to_string(60020,7),'0060020');
+            
+            function collect_tokens(tokenizer)
+            {
+                var tokens = [];
+                var token = 0;
+                while(true)
+                {
+                    token = tokenizer.next_token();
+                    if(token.type == S.DateTokenizer.Token.END)
+                    {
+                        tokens.push(token)
+                        return tokens;
+                    }
+                    tokens.push(token);
+                }
+                return tokens;
+            }
+            
+            function eq(a,b)
+            {
+                if(a.length != b.length)
+                    return false;
+                for(var i =0;i<a.length;++i)
+                    if(a[i].type!=b[i].type || a[i].value != b[i].value)
+                        return false;
+                return true;
+            }
+            tE = S.DateTokenizer.Token.END;
+            tN = S.DateTokenizer.Token.NUMBER;
+            tS = S.DateTokenizer.Token.STRING;
+            tF = S.DateTokenizer.Token.FORMAT;
+            
+            function t(type,value)
+            {
+                return {type:type,value:value};
+            }
+            
+            function assertParsed(str,expected,parse_format)
+            {
+                var tokens = collect_tokens(new S.DateTokenizer(str,parse_format));
+                assertTrue(eq(tokens,expected));
+            }
+            
+            function assertParsedBoth(str,expected)
+            {
+                var tokens = collect_tokens(new S.DateTokenizer(str,true));
+                assertTrue(eq(tokens,expected));
+                
+                tokens = collect_tokens(new S.DateTokenizer(str,false));
+                assertTrue(eq(tokens,expected));
+            }
+            
+            function assertParsedWS(str,expected,parse_format)
+            {
+                var tokens = collect_tokens(new S.DateTokenizer(str,parse_format,true));
+                assertTrue("expected token sequences are equal",eq(tokens,expected));
+            }
+            
+            function assertRaises(f)
+            {
+                var thrown = false;
+                try{f();}
+                catch(exc)
+                {
+                    return;
+                }
+                assertTrue("expected function to raise exception",false);
+            }
+
+            function goTest()
+            {
+                assertParsedBoth('0123',
+                    [t(tN,123),t(tE,0)],false);
+                assertParsedBoth('~@dgh',
+                    [t(tS,'~@dgh'),t(tE,0)],false);            
+                assertParsedBoth('~@dgh34',
+                    [t(tS,'~@dgh'),t(tN,34),t(tE,0)],false);
+                assertParsedBoth('4080~//',
+                    [t(tN,4080),t(tS,'~//'),t(tE,0)],false);
+                assertParsedBoth('4080~/12/0098',
+                    [t(tN,4080),t(tS,'~/'),t(tN,12),t(tS,'/'),t(tN,98),t(tE,0)],false);
+                assertParsedBoth('   40 80 ~ / 12/ 009 8',
+                    [t(tN,40),t(tN,80),t(tS,'~/'),t(tN,12),t(tS,'/'),t(tN,9),t(tN,8),t(tE,0)],false);
+
+                assertParsed('  %m  -  %d  -  %y  ?  %Y  %H  :  %M',
+                    [t(tF,'%m'),t(tS,'-'),t(tF,'%d'),t(tS,'-'),t(tF,'%y'),
+                     t(tS,'?'),t(tF,'%Y'),t(tF,'%H'),t(tS,':'),t(tF,'%M'),t(tE,0)],true);
+                     
+                assertParsedWS('  %m  -  %d  -  %y  ?  %Y  %H  :  %M  ',
+                    [t(tS,'  '),t(tF,'%m'),t(tS,'  -  '),t(tF,'%d'),t(tS,'  -  '),t(tF,'%y'),
+                     t(tS,'  ?  '),t(tF,'%Y'),t(tS,'  '),t(tF,'%H'),t(tS,'  :  '),t(tF,'%M'),t(tS,'  '),t(tE,0)],true);
+
+                formatter = new S.DateFormatter('%d - %m - %Y %H : %M');
+                date = formatter.from_string('16-01-2009 12:33');
+                assertEquals(date.getDate(),16);
+                assertEquals(date.getMonth(),0);
+                assertEquals(date.getFullYear(),2009);
+                assertEquals(date.getHours(),12);
+                assertEquals(date.getMinutes(),33);
+                
+                assertRaises(function(){formatter.from_string('16~01-2009 12:33');});
+                assertRaises(function(){formatter.from_string('32-01-2009 12:33');});
+                assertRaises(function(){formatter.from_string('12-13-2009 12:33');});
+                assertRaises(function(){formatter.from_string('12-01-2009 25:33');});
+                assertRaises(function(){formatter.from_string('12-01-2009 11:61');});
+                
+                date = formatter.from_string(' 16 - 01 - 2009 12    :   33');
+                assertEquals(date.getDate(),16);
+                assertEquals(date.getMonth(),0);
+                assertEquals(date.getFullYear(),2009);
+                assertEquals(date.getHours(),12);
+                assertEquals(date.getMinutes(),33);
+                
+                assertEquals(formatter.to_string(date),'16 - 01 - 2009 12 : 33');
+                
+                formatter = new S.DateFormatter('%m-%d-%y %M~~%H');
+                date = formatter.from_string(' 03 - 15 - 05 22    ~~   11');
+                assertEquals(date.getDate(),15);
+                assertEquals(date.getMonth(),2);
+                assertEquals(date.getFullYear(),2005);
+                assertEquals(date.getHours(),11);
+                assertEquals(date.getMinutes(),22);
+                
+                //some crazy stuff
+                formatter = new S.DateFormatter('1 %d 2-3 %m - %Y %H : %M');
+                date = formatter.from_string('1 16 2-3 01-2009 12:33');
+                assertEquals(date.getDate(),16);
+                assertEquals(date.getMonth(),0);
+                assertEquals(date.getFullYear(),2009);
+                assertEquals(date.getHours(),12);
+                assertEquals(date.getMinutes(),33);
+                
+                assertEquals(formatter.to_string(date),'1 16 2-3 01 - 2009 12 : 33');
+
+                //test AM/PM format
+                formatter = new S.DateFormatter('%m-%d-%Y %P:');
+                date = formatter.from_string(' 01 - 16 - 2010 11:01PM');
+                assertEquals(date.getDate(),16);
+                assertEquals(date.getMonth(),0);
+                assertEquals(date.getFullYear(),2010);
+                assertEquals(date.getHours(),23);
+                assertEquals(date.getMinutes(),1);
+                assertEquals(formatter.to_string(date),'01-16-2010 11:01PM');
+
+
+                //test AM/PM format lowercase
+                formatter = new S.DateFormatter('%m-%d-%Y %p.');
+                date = formatter.from_string(' 03 - 16 - 2011 10.04 am');
+                assertEquals(date.getDate(),16);
+                assertEquals(date.getMonth(),2);
+                assertEquals(date.getFullYear(),2011);
+                assertEquals(date.getHours(),10);
+                assertEquals(date.getMinutes(),4);
+                assertEquals(formatter.to_string(date),'03-16-2011 10.04am');
+
+                //assert raises when hours is greater than 12
+                assertRaises(function(){formatter.from_string('03 - 16 - 2011 14.04 am');});
+                //and when format does not match
+                assertRaises(function(){formatter.from_string('03 - 16 - 2011 11~~04 am');});
+
+                
+                //test permissive mode
+                formatter = new S.DateFormatter('%d.%m.%Y %H:%M',true);
+                //still parses ok.
+                date = formatter.from_string('13.5.2004 16:01');
+                assertEquals(date.getDate(),13);
+                assertEquals(date.getMonth(),4);
+                assertEquals(date.getFullYear(),2004);
+                assertEquals(date.getHours(),16);
+                assertEquals(date.getMinutes(),01);
+                assertEquals(formatter.human_readable_format(),'Day2Digits.Month2Digits.Year4Digits Hours24:Minutes2Digits');
+                
+                //now give it something really different:
+                date = formatter.from_string('January 16 2021 12:01');
+                //recover strategy is to return today in case of error :)
+                var today = new Date();
+                assertEquals(date.getFullYear(),today.getFullYear());
+                assertEquals(date.getDate(),today.getDate());
+                assertEquals(date.getMonth(),today.getMonth());
+                assertEquals(date.getHours(),today.getHours());
+                assertEquals(date.getMinutes(),today.getMinutes());
+            }
+            
+            goTest();
+            
+
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

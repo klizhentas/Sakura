@@ -1,0 +1,16 @@
+*.pyc
+*.pyc~
+*.py~
+*.js~
+*.jsc
+*.php~
+*.png
+*.xsl~
+*.xml~
+*.css~
+*.gif
+*.html~
+*.tmpl~
+*.sed~
+*.*~
+\.gitignore~

@@ -1,0 +1,117 @@
+/************************************************/
+/*      calendar                                */
+/************************************************/
+
+div.sakura_calendar
+{
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    background-color: white;
+    z-index: 200;
+}
+
+table.sakura_calendar
+{
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border-left: 1px solid #DBE3F0;
+    border-right: 1px solid #DBE3F0;
+    border-bottom: 1px solid #DBE3F0;
+}
+
+table.sakura_calendar tr
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+table.sakura_calendar tr td
+{
+    margin: 0px;
+    padding: 2px 4px;
+    text-align: center;    
+}
+
+table.sakura_calendar tr.header, table.sakura_calendar tr.weekdays {
+    background-color: #DBE3F0;
+}
+
+table.sakura_calendar tr.header td.header_month_iterator
+{
+    cursor: pointer;
+}
+
+table.sakura_calendar tr.header span.header_year, table.sakura_calendar tr.header span.header_month
+{
+    cursor: pointer;
+    padding: 0px 4px;
+}
+
+table.sakura_calendar tr.weekdays td
+{
+    cursor: default;
+    font-size: 11px;
+    width: 16px;
+}
+
+table.sakura_calendar tr.week td
+{
+    cursor: pointer;
+    font-size: 11px;
+}
+
+table.sakura_calendar tr.week td.this_month
+{
+    color: black;
+}
+
+table.sakura_calendar tr.week td.this_month_date
+{
+    color: black;
+    background-color: LightGrey;
+}
+
+table.sakura_calendar tr.week td.region_date
+{
+    background-color: #FBFFCE;
+}
+
+table.sakura_calendar tr.week td.this_month_date_weekend
+{
+    color: black;
+    background-color: #a7c3db;
+}
+
+table.sakura_calendar tr.week td.other_month
+{
+    color: gray;
+}
+
+table.sakura_calendar tr.week td.weekend
+{
+    background-color: #F3F8FF;
+}
+
+table.sakura_calendar tr.time {
+    background-color: #DBE3F0;
+}
+
+table.sakura_calendar tr.time td.time input{
+    border:1px solid #F3F8FF;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    width: 30px;
+}
+
+table.sakura_calendar tr.time td.time select{
+    border:1px solid #F3F8FF;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    margin-left: 2px;
+}
+
+table.sakura_calendar tr.time a{
+    color:black;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+}

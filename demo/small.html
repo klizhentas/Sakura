@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>Sakura</title>
+    <link rel="stylesheet" type="text/css"
+    href="../css/small.css" media = "screen"/>
+    <script type = "text/javascript" 
+            src = "http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
+    <script type = "text/javascript" 
+            src = "http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js"></script>
+    <script type = "text/javascript" 
+            src = "../js/lib.js"></script>
+    <script type = "text/javascript" 
+            src = "../js/parser.js"></script>
+    <script type = "text/javascript" 
+            src = "../js/small.js"></script>
+    <script type = "text/javascript">
+      Event.observe(window, 'load',
+          function(){
+              var S = window.__Sakura;
+              new S.Calendar({
+                 inline: 'inline-parent',
+                 week_starts_from: S.Calendar.Sun,
+                 translate: S.Calendar.translate_en,
+                 region_select: true,
+                 region_select_grab_week: true,
+                 on_change: function(date){
+                    $('date-is').innerHTML =date.toString();
+                 },
+                 on_region_select: function(s,e){
+                    $('date-is').innerHTML = [s.toString(),'&mdash;',e.toString()].join(' ');
+                 }
+              });
+
+              new S.Calendar({
+                 input: 'date-input',
+                 input_format: '%d-%m-%Y',
+                 translate: S.Calendar.translate_en,
+                 week_starts_from: S.Calendar.Mon
+              });
+
+              new S.Calendar({
+                 input: 'date-input-time24',
+                 input_format: '%d-%m-%Y %H:%M',
+                 week_starts_from: S.Calendar.Mon,
+                 translate: S.Calendar.translate_en,
+                 time: true,
+                 time_format: S.Calendar.H24
+              });
+
+              new S.Calendar({
+                 input: 'date-input-timeampm',
+                 input_format: '%d-%m-%Y %P:',
+                 translate: S.Calendar.translate_en,
+                 week_starts_from: S.Calendar.Sun,
+                 time: true,
+                 time_format: S.Calendar.AMPM
+              });
+
+              new S.Calendar({
+                 input: 'date-input-with-toggle',
+                 input_format: '%d-%m-%Y %H:%M',
+                 input_toggle: 'date-input-toggle',
+                 translate: S.Calendar.translate_en,
+                 week_starts_from: S.Calendar.Fri,
+                 time: true,
+                 time_format: S.Calendar.AMPM
+              });
+          });
+
+    </script>
+  </head>
+  <body>
+    <div id = "inline-parent" style = "margin:20px 0px 0px 20px;"></div>
+    <div id = "date-is" style = "margin-left:20px;"></div>
+    <div style = "margin:20px;">
+      <input type = "text" id = "date-input" value = ""/>
+      <input type = "text" id = "date-input-time24" value = "hello!"/>
+      <input type = "text" id = "date-input-timeampm" value = "hello!"/>
+      <input type = "text" id = "date-input-with-toggle" value ="hello!"/>
+      <a href = "javascript:void(0);" id = "date-input-toggle">click me</a>
+    </div>
+  </body>
+</html>
